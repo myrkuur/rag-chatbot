@@ -26,7 +26,7 @@ A **Retrieval-Augmented Generation (RAG)** chatbot powered by:
 
 ## 📁 Project Structure
 
-
+```
 rag-chatbot/
 ├── app.py               # FastAPI app endpoints
 ├── bot.py               # Telegram bot logic
