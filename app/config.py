@@ -10,7 +10,7 @@ from app.db import VectorStoreManager
 
 vector_store_manager = VectorStoreManager()
 
-llm = ChatOpenAI(model="gpt-4.1-mini-2025-04-14", api_key=os.getenv("OPENAI_KEY"))
+llm = ChatOpenAI(model=os.getenv("OPENAI_MODEL_NAME"), api_key=os.getenv("OPENAI_KEY"))
 
 set_llm_cache(InMemoryCache())
 

@@ -1,10 +1,15 @@
-FROM python:3.10-slim-bullseye
+FROM python:3.12
+
+# Install dependencies
+RUN pip install pysqlite3-binary
+
+RUN pip install torch  --index-url https://download.pytorch.org/whl/cpu
 
 COPY ./app_requirements.txt /
 
 RUN pip install -r app_requirements.txt
 
-COPY ./app /
+COPY ./app /app
 
 EXPOSE 8000
 

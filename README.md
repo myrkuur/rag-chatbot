@@ -22,6 +22,7 @@ A **Retrieval-Augmented Generation (RAG)** chatbot powered by:
 - 🧪 Comprehensive testing with `pytest`
 - 🐳 Containerized deployment
 
+<<<<<<< Updated upstream
 ---
 
 ## 📁 Project Structure
@@ -42,6 +43,8 @@ rag-chatbot/
 ├── README.md            # Project documentation
 
 ````
+=======
+>>>>>>> Stashed changes
 
 ---
 
@@ -50,27 +53,30 @@ rag-chatbot/
 1. **Clone the repo**
 
 ```bash
-git clone https://github.com/yourusername/rag-chatbot.git
+git clone https://github.com/myrkuur/rag-chatbot.git
 cd rag-chatbot
 ````
 
 2. **Create `.env` file**
 
-```bash
-cp .env.example .env
-```
 
 Add your API keys:
 
 ```env
-OPENAI_API_KEY=your-openai-key
-TELEGRAM_BOT_TOKEN=your-telegram-bot-token
+OPENAI_KEY=
+OPENAI_MODEL_NAME=
+EMBEDDING_MODEL_NAME=
+FASTAPI_BASE_URL=
+TELEGRAM_BOT_TOKEN=
 ```
 
 3. **Install dependencies**
 
 ```bash
-make install
+conda create -n rag-chatbot python=3.10 ipython
+conda activate rag-chatbot
+pip install -r app_requirements.txt
+pip install -r bot_requirements.txt
 ```
 
 ---
@@ -82,7 +88,7 @@ make test
 ```
 
 * Runs `pytest` with environment variables from `.env`
-* Covers FastAPI endpoints and Telegram bot logic
+* Covers FastAPI endpoints
 
 ---
 
@@ -109,7 +115,7 @@ make run-bot
 Build and run using Docker Compose:
 
 ```bash
-docker-compose up --build
+make run-prod
 ```
 
 This launches:
@@ -137,9 +143,9 @@ This launches:
   **Params:** `query`, `session_id` (optional)
 
 * `POST /ingest` — Ingest content from a URL
-  **Params:** `url`
+  **Params:** `url`, `session_id`
 
-* `GET /delete-everything` — Delete session data
+* `GET /delete-user-data` — Delete session data
   **Params:** `session_id`
 
 ---
@@ -147,11 +153,7 @@ This launches:
 ## ✅ Makefile Commands
 
 ```bash
-make install        # Install dependencies from requirements.txt
-make test           # Run pytest
-make run-api        # Launch FastAPI server
-make run-bot        # Start Telegram bot
-make env            # Create .env file from template
+make help
 ```
 
 ---
@@ -177,13 +179,5 @@ make env            # Create .env file from template
 | Testing       | Pytest + unittest.mock        |
 | Deployment    | Docker + Compose              |
 
----
 
-## 🙋 FAQ
-
-**Q:** How do I ingest content?
-**A:** Use `/ingest <URL>` in Telegram or call `/ingest?url=...` via API.
-
-**Q:** How do I reset my data?
-**A:** Use `/delete` in Telegram to wipe your session’s vector store and history.
 

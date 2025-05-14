@@ -1,17 +1,48 @@
+import os
 from uuid import uuid4
 
 from langchain_core.documents import Document
-from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_chroma import Chroma
 
 from app.paths import ARTIFACTS_DIR
 
+from transformers import AutoTokenizer, AutoModel
+import torch
+
+
+class HFEmbeddingFunction:
+    def __init__(self, model_name=os.getenv("EMBEDDING_MODEL_NAME")):
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+        self.model = AutoModel.from_pretrained(model_name)
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.model.to(self.device)
+        self.model.eval()
+
+    def embed_query(self, text):
+        return self._embed(text)
+
+    def embed_documents(self, texts):
+        return [self._embed(text) for text in texts]
+
+    def _embed(self, text):
+        # For E5 models, add instruction prefix
+        text = "query: " + text if not text.startswith("query:") else text
+        inputs = self.tokenizer(text, return_tensors="pt", padding=True, truncation=True)
+        inputs = {k: v.to(self.device) for k, v in inputs.items()}
+
+        with torch.no_grad():
+            model_output = self.model(**inputs)
+
+        embeddings = model_output.last_hidden_state[:, 0, :]
+        embeddings = torch.nn.functional.normalize(embeddings, p=2, dim=1)
+        return embeddings.cpu().numpy().flatten()
+
 
 class VectorStoreManager:
     def __init__(
-        self, collection_name="documents", model_name="intfloat/multilingual-e5-large-instruct"
+        self, collection_name="documents", model_name=os.getenv("EMBEDDING_MODEL_NAME")
     ):
-        self.embeddings = HuggingFaceEmbeddings(model_name=model_name)
+        self.embeddings = HFEmbeddingFunction(model_name=model_name)
         self.collection_name = collection_name
         self.persist_directory = str(ARTIFACTS_DIR / "chroma")
         self.vector_store = self._initialize_vector_store()

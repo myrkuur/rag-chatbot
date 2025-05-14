@@ -1,11 +1,12 @@
+import os
 import logging
 import requests
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
 
 # === CONFIGURATION ===
-FASTAPI_BASE_URL = "http://localhost:8000"  # Change to your FastAPI server URL
-TELEGRAM_BOT_TOKEN = "7824610516:AAFzQFbPHnWXKvNl_6DaYd7l4mKaXtxVtuc"
+FASTAPI_BASE_URL = os.getenv("FASTAPI_BASE_URL", "http://localhost:8000")
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 
 # === LOGGING ===
 logging.basicConfig(
