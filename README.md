@@ -22,31 +22,6 @@ A **Retrieval-Augmented Generation (RAG)** chatbot powered by:
 - 🧪 Comprehensive testing with `pytest`
 - 🐳 Containerized deployment
 
-<<<<<<< Updated upstream
----
-
-## 📁 Project Structure
-
-```
-rag-chatbot/
-├── app.py               # FastAPI app endpoints
-├── bot.py               # Telegram bot logic
-├── config.py            # Shared constants and session config
-├── utils.py             # Core logic: retrieval, query, ingestion
-├── paths.py             # File paths used across app
-├── tests/               # Unit tests
-├── Dockerfile           # API Dockerfile
-├── bot.Dockerfile       # Telegram bot Dockerfile
-├── docker-compose.yml   # Run both containers
-├── Makefile             # Common dev commands
-├── .env.example         # Template for environment variables
-├── README.md            # Project documentation
-
-````
-=======
->>>>>>> Stashed changes
-
----
 
 ## ⚙️ Environment Setup
 
